@@ -21,6 +21,7 @@ public class BankingServices {
         c.execute(input);
     }
     public void addAccount(Account account, String accountNameorIBAN, String userEmail) {
+        account.setUser(Bank.getInstance().getUsers().get(userEmail));
         Bank.getInstance().getUsers().get(userEmail).getAccounts().put(accountNameorIBAN, account);
         Bank.getInstance().getAccounts().put(accountNameorIBAN, account);
     }
@@ -37,12 +38,14 @@ public class BankingServices {
             //err
             return;
         }
+        card.setAccount(account);
         account.getCards().put(card.getCardNumber(), card);
     }
     public void addFounds(String accountNameorIBAN, double amount) {
         Account account = Bank.getInstance().getAccounts().get(accountNameorIBAN);
         if (account == null) {
             //err
+            return;
         }
         account.setBalance(account.getBalance() + amount);
     }
@@ -56,6 +59,7 @@ public class BankingServices {
         for (Account account : userAccounts.values()) {
             if (account.getCards().containsKey(cardNumber)) {
                 account.getCards().remove(cardNumber);
+                Bank.getInstance().getCards().remove(cardNumber);
             } else {
                 //mesaj eroare
             }

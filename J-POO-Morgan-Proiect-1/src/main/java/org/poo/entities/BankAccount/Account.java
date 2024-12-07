@@ -1,9 +1,11 @@
 package org.poo.entities.BankAccount;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.poo.entities.card.Card;
 import org.poo.entities.transaction.Transaction;
+import org.poo.entities.user.User;
 import org.poo.fileio.CommandInput;
 import org.poo.utils.Utils;
 
@@ -12,9 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Account {
+public abstract class Account implements AccountObserver {
     private String IBAN;
     private double balance;
+    @JsonIgnore
+    private double minimumBalance;
+    @JsonIgnore
+    private User user;
     private String currency;
     private String type;
     private Map<String, Card> cards;
@@ -24,7 +30,14 @@ public abstract class Account {
         this.currency = currency;
         this.type = type;
         this.cards = new HashMap<>();
+        this.minimumBalance = -1;
     }
+
+    @Override
+    public void verifyBalance() {
+
+    }
+
     @JsonGetter("cards")
     public List<Card> getCardsAsList() {
         return new ArrayList<>(cards.values()).reversed();
@@ -69,5 +82,13 @@ public abstract class Account {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public void setMinimumBalance(double minimumBalance) {
+        this.minimumBalance = minimumBalance;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

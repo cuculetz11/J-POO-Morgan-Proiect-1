@@ -1,12 +1,14 @@
 package org.poo.entities.card;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.poo.entities.BankAccount.Account;
 import org.poo.utils.Utils;
 
 public abstract class Card {
     private String cardNumber;
     private String status;
-    //private Account account;
+    @JsonIgnore
+    private Account account;
     public Card() {
         this.cardNumber = Utils.generateCardNumber();
         this.status = "active";
@@ -26,5 +28,13 @@ public abstract class Card {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

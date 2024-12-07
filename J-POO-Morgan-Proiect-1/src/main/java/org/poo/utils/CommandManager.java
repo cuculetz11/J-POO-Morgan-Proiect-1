@@ -1,11 +1,9 @@
 package org.poo.utils;
 
 import org.poo.command.Command;
+import org.poo.command.SetMinBalance;
 import org.poo.command.debug.PrintUsers;
-import org.poo.command.transaction.AddAccount;
-import org.poo.command.transaction.AddFounds;
-import org.poo.command.transaction.CreateCard;
-import org.poo.command.transaction.DeleteAccount;
+import org.poo.command.transaction.*;
 
 /*
 Aceasta calsa e un fel de factory pentu comenzi
@@ -19,17 +17,22 @@ public class CommandManager {
                 return new PrintUsers();
             case "addAccount":
                 return new AddAccount();
-            case "createCard", " createOneTimeCard":
+            case "createCard", "createOneTimeCard":
                 return new CreateCard();
             case "addFunds":
                 return new AddFounds();
             case "deleteAccount":
                 return new DeleteAccount();
             case "deleteCard":
+                return new DeleteCard();
+            case "setMinimumBalance":
+                return new SetMinBalance();
+            case "payOnline":
+                return new PayOnline();
 
 
         }
-        return null;
+        throw new IllegalArgumentException("Command not found");
     }
 
 }
