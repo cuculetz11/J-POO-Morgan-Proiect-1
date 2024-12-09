@@ -1,9 +1,12 @@
 package org.poo.utils;
 
+import org.poo.command.CheckCardStatus;
 import org.poo.command.Command;
 import org.poo.command.SetMinBalance;
+import org.poo.command.debug.PrintTransaction;
 import org.poo.command.debug.PrintUsers;
 import org.poo.command.transaction.*;
+import org.poo.fileio.UserInput;
 
 /*
 Aceasta calsa e un fel de factory pentu comenzi
@@ -29,6 +32,18 @@ public class CommandManager {
                 return new SetMinBalance();
             case "payOnline":
                 return new PayOnline();
+            case "sendMoney":
+                return new SendMoney();
+            case "setAlias":
+                return new SetAlias();
+            case "printTransactions":
+                return new PrintTransaction();
+            case "checkCardStatus":
+                return new CheckCardStatus();
+            case "changeInterestRate":
+                return new ChangeInterestRate();
+            case "splitPayment":
+                return new SplitPayment();
 
 
         }

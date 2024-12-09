@@ -1,8 +1,7 @@
 package org.poo.command.transaction;
 
 import org.poo.command.Command;
-import org.poo.entities.Bank;
-import org.poo.entities.BankAccount.Account;
+import org.poo.entities.bankAccount.Account;
 import org.poo.entities.transaction.AccountCreate;
 import org.poo.entities.transaction.Transaction;
 import org.poo.fileio.CommandInput;

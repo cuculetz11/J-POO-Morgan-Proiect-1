@@ -1,18 +1,14 @@
-package org.poo.entities.BankAccount;
+package org.poo.entities.bankAccount;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.poo.entities.CurrencyPair;
 import org.poo.entities.card.Card;
-import org.poo.entities.transaction.Transaction;
 import org.poo.entities.user.User;
-import org.poo.fileio.CommandInput;
+import org.poo.services.AccountServices;
 import org.poo.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Account implements AccountObserver {
     private String IBAN;
@@ -23,24 +19,37 @@ public abstract class Account implements AccountObserver {
     private User user;
     private String currency;
     private String type;
-    private Map<String, Card> cards;
+    private LinkedHashMap<String, Card> cards;
     public Account( double balance, String currency, String type) {
         this.IBAN = Utils.generateIBAN();
         this.balance = balance;
         this.currency = currency;
         this.type = type;
-        this.cards = new HashMap<>();
-        this.minimumBalance = -1;
+        this.cards = new LinkedHashMap<>();
+        this.minimumBalance = 0;
     }
 
+    public void transfer(Account receiver, double amount) {
+        this.setBalance(this.getBalance() - amount);
+        CurrencyPair currencyPair = new CurrencyPair(this.currency, receiver.getCurrency());
+        AccountServices accountServices = new AccountServices();
+        double exchangedAmount = accountServices.exchangeCurrency(currencyPair, amount);
+        receiver.setBalance(receiver.getBalance() + exchangedAmount);
+    }
+    public void pay(double amount) {
+        this.setBalance(this.getBalance() - amount);
+    }
     @Override
-    public void verifyBalance() {
-
+    public boolean verifyBalance() {
+        if(minimumBalance >= balance)
+            return true;
+        return false;
     }
+    public abstract boolean isTransferPossible(double amount);
 
     @JsonGetter("cards")
     public List<Card> getCardsAsList() {
-        return new ArrayList<>(cards.values()).reversed();
+        return new ArrayList<>(cards.values());
     }
     //public abstract Transaction createTransaction(CommandInput commandInput);
     @JsonGetter("IBAN")
@@ -64,7 +73,7 @@ public abstract class Account implements AccountObserver {
         this.IBAN = IBAN;
     }
 
-    public void setCards(Map<String, Card> cards) {
+    public void setCards(LinkedHashMap<String, Card> cards) {
         this.cards = cards;
     }
 
@@ -90,5 +99,9 @@ public abstract class Account implements AccountObserver {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

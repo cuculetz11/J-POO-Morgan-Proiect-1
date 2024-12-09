@@ -1,7 +1,7 @@
 package org.poo.entities.card;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.poo.entities.BankAccount.Account;
+import org.poo.entities.bankAccount.Account;
 import org.poo.utils.Utils;
 
 public abstract class Card {
@@ -9,6 +9,8 @@ public abstract class Card {
     private String status;
     @JsonIgnore
     private Account account;
+
+    public abstract void pay(double amount);
     public Card() {
         this.cardNumber = Utils.generateCardNumber();
         this.status = "active";

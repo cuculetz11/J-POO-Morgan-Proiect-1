@@ -2,11 +2,10 @@ package org.poo.services;
 
 import org.poo.command.Command;
 import org.poo.entities.Bank;
-import org.poo.entities.BankAccount.Account;
+import org.poo.entities.bankAccount.Account;
 import org.poo.entities.card.Card;
 import org.poo.entities.transaction.Transaction;
 import org.poo.fileio.CommandInput;
-import org.poo.fileio.ObjectInput;
 import org.poo.utils.CommandManager;
 
 import java.util.ArrayList;
@@ -26,11 +25,10 @@ public class BankingServices {
         Bank.getInstance().getAccounts().put(accountNameorIBAN, account);
     }
     public void addTransactionHistory(Transaction transaction, String userEmail) {
-        ArrayList<Transaction> usersTransaction = Bank.getInstance().getTransactionHistory().get(userEmail);
-        if (usersTransaction == null) {
-            usersTransaction = new ArrayList<>();
+        if (Bank.getInstance().getTransactionHistory().get(userEmail) == null) {
+             Bank.getInstance().getTransactionHistory().put(userEmail, new ArrayList<>());
         }
-        usersTransaction.add(transaction);
+        Bank.getInstance().getTransactionHistory().get(userEmail).add(transaction);
     }
     public void addCard(Card card, String userEmail, String accountNameorIBAN) {
         Account account = Bank.getInstance().getUsers().get(userEmail).getAccounts().get(accountNameorIBAN);
@@ -40,6 +38,7 @@ public class BankingServices {
         }
         card.setAccount(account);
         account.getCards().put(card.getCardNumber(), card);
+        Bank.getInstance().getCards().put(card.getCardNumber(), card);
     }
     public void addFounds(String accountNameorIBAN, double amount) {
         Account account = Bank.getInstance().getAccounts().get(accountNameorIBAN);
@@ -49,7 +48,21 @@ public class BankingServices {
         }
         account.setBalance(account.getBalance() + amount);
     }
+
+    /**
+     * Sterge contul si cardurile lui daca balata sa este 0
+     * @param emailUser emailul user-ului
+     * @param accountNameorIBAN IBAN-ul sau alias-ul contului
+     * @return
+     */
     public boolean removeAccount(String emailUser, String accountNameorIBAN) {
+        Account account = Bank.getInstance().getUsers().get(emailUser).getAccounts().get(accountNameorIBAN);
+        if(account.getBalance() != 0)
+            return false;
+        for(Card c : account.getCards().values()) {
+            Bank.getInstance().getCards().remove(c.getCardNumber());
+        }
+        account.getCards().clear();
         Bank.getInstance().getUsers().get(emailUser).getAccounts().remove(accountNameorIBAN);
         Bank.getInstance().getAccounts().remove(accountNameorIBAN);
         return true;

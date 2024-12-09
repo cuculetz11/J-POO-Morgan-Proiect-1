@@ -1,6 +1,6 @@
 package org.poo.command.debug.dto;
 
-public class DeleteAccountDTO {
+public class DeleteAccountDTO implements AccountDeleteInfo{
     private String success;
     private int timestamp;
 

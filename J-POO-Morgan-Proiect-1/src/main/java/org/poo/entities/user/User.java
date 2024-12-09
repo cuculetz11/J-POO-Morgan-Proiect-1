@@ -1,13 +1,10 @@
 package org.poo.entities.user;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import org.poo.entities.BankAccount.Account;
+import org.poo.entities.bankAccount.Account;
 import org.poo.fileio.UserInput;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class User {
     private String firstName;
@@ -19,11 +16,11 @@ public class User {
         this.firstName = userInput.getFirstName();
         this.lastName = userInput.getLastName();
         this.email = userInput.getEmail();
-        this.accounts = new HashMap<>();
+        this.accounts = new LinkedHashMap<>();
     }
     @JsonGetter("accounts")
     public List<Account> getAccountsAsList() {
-        return new ArrayList<>(accounts.values());
+        return new ArrayList<>(new LinkedHashSet<>(accounts.values()));
     }
     public String getEmail() {
         return email;

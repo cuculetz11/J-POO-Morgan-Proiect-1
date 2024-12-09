@@ -1,8 +1,8 @@
 package org.poo.utils.factory;
 
-import org.poo.entities.BankAccount.Account;
-import org.poo.entities.BankAccount.ClassicAcount;
-import org.poo.entities.BankAccount.SavingsAccount;
+import org.poo.entities.bankAccount.Account;
+import org.poo.entities.bankAccount.ClassicAcount;
+import org.poo.entities.bankAccount.SavingsAccount;
 import org.poo.fileio.CommandInput;
 
 public class AccountFactory {

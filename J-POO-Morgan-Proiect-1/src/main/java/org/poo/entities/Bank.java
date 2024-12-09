@@ -1,27 +1,28 @@
 package org.poo.entities;
 
-import org.poo.entities.BankAccount.Account;
+import org.poo.entities.bankAccount.Account;
 import org.poo.entities.card.Card;
 import org.poo.entities.transaction.Transaction;
 import org.poo.entities.user.User;
-import org.poo.services.BankMethods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Bank {
     private static Bank instance = null;
-    private Map<String, User> users;
+    private LinkedHashMap<String, User> users;
     private Map<String, Account> accounts;
     private Map<String, Card> cards;
-    private Map<String[],Double> exchangeRates;
+    private ExchangeRates exchangeRates;
     private Map<String, ArrayList<Transaction>> transactionHistory;
     private Bank() {
-        users = new HashMap<>();
-        exchangeRates = new HashMap<>();
+        users = new LinkedHashMap<>();
+        exchangeRates = new ExchangeRates();
         transactionHistory = new HashMap<>();
         accounts = new HashMap<>();
+        cards = new HashMap<>();
     }
     public static Bank getInstance() {
         if (instance == null) {
@@ -30,22 +31,19 @@ public class Bank {
         return instance;
     }
     public void reset() {
-        users = new HashMap<>();
+        users = new LinkedHashMap<>();
         accounts = new HashMap<>();
-        exchangeRates = new HashMap<>();
+        exchangeRates = new ExchangeRates();
         transactionHistory = new HashMap<>();
+        cards = new HashMap<>();
     }
-    public Map<String, User> getUsers() {
+
+    public LinkedHashMap<String, User> getUsers() {
         return users;
     }
-    public void setUsers(Map<String, User> users) {
-        this.users = users;
-    }
-    public Map<String[],Double> getExchangeRates() {
+
+    public ExchangeRates getExchangeRates() {
         return exchangeRates;
-    }
-    public void setExchangeRates(Map<String[],Double> exchangeRates) {
-        this.exchangeRates = exchangeRates;
     }
 
     public Map<String, ArrayList<Transaction>> getTransactionHistory() {

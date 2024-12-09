@@ -10,4 +10,11 @@ public class CardPayment extends Transaction {
         this.commerciant = commerciant;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public String getCommerciant() {
+        return commerciant;
+    }
 }
