@@ -2,6 +2,7 @@ package org.poo.entities.card;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.poo.entities.bankAccount.Account;
+import org.poo.entities.transaction.Transaction;
 import org.poo.utils.Utils;
 
 public abstract class Card {

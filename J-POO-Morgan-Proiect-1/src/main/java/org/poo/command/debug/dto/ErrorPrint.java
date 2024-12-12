@@ -1,9 +1,9 @@
 package org.poo.command.debug.dto;
 
-public class ErrorDeleteAccount implements AccountDeleteInfo {
+public class ErrorPrint implements AccountDeleteInfo {
     private String error;
     private int timestamp;
-    public ErrorDeleteAccount(String error, int timestamp) {
+    public ErrorPrint(String error, int timestamp) {
         this.error = error;
         this.timestamp = timestamp;
     }

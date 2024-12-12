@@ -3,6 +3,7 @@ package org.poo.services.payment;
 import org.poo.entities.Bank;
 import org.poo.entities.CurrencyPair;
 import org.poo.entities.bankAccount.Account;
+import org.poo.entities.transaction.ErrorSplitPayment;
 import org.poo.entities.transaction.SplitPayment;
 import org.poo.entities.transaction.Transaction;
 import org.poo.fileio.CommandInput;
@@ -20,6 +21,7 @@ public class SplitPaymentStrategy implements PaymentStrategy {
         AccountServices accountServices = new AccountServices();
         BankingServices bankingServices = new BankingServices();
         boolean insufficientMoney = false;
+        String accountWithLowMoney = null;
         for(String IBAN: input.getAccounts()) {
             if(IBAN.chars().allMatch(Character::isLetter))
                 return true;
@@ -33,20 +35,25 @@ public class SplitPaymentStrategy implements PaymentStrategy {
             amounts.add(ammountPay);
             if(!account.isTransferPossible(ammountPay)) {
                 insufficientMoney = true;
+                accountWithLowMoney = IBAN;
             }
         }
+        String description = "Split payment of " + String.format("%.2f", input.getAmount()) + " " + input.getCurrency();
+        String error = "Account " + accountWithLowMoney + " has insufficient funds for a split payment.";
         if(insufficientMoney) {
-            Transaction transaction = new Transaction(input.getTimestamp(), "Insufficient funds");
+            Transaction transaction = new ErrorSplitPayment(input.getTimestamp(), input.getCurrency(),amountPerUser, input.getAccounts(),description,error);
             for(Account account: accounts) {
                 bankingServices.addTransactionHistory(transaction,account.getUser().getEmail());
+                accountServices.addTransactionToHistory(account.getIBAN(), transaction);
             }
             return true;
         }
-        //adauga tranzactia
-        String description = "Split payment of " + String.format("%.2f", input.getAmount()) + " " + input.getCurrency();
+
+
         Transaction transaction = new SplitPayment(input.getTimestamp(), input.getCurrency(),amountPerUser,input.getAccounts(),description);
         for(Account account: accounts) {
             bankingServices.addTransactionHistory(transaction,account.getUser().getEmail());
+            accountServices.addTransactionToHistory(account.getIBAN(), transaction);
         }
         return false;
 

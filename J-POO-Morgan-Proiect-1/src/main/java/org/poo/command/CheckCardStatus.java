@@ -1,6 +1,6 @@
 package org.poo.command;
 
-import org.poo.command.debug.dto.CardActionsInfo;
+import org.poo.command.debug.error.NotFoundError;
 import org.poo.command.debug.dto.DebugActionsDTO;
 import org.poo.entities.Bank;
 import org.poo.entities.card.Card;
@@ -15,8 +15,8 @@ public class CheckCardStatus implements Command{
         BankingServices bankingServices = new BankingServices();
         Card card = Bank.getInstance().getCards().get(input.getCardNumber());
         if (card == null) {
-            CardActionsInfo info = new CardActionsInfo("Card not found", input.getTimestamp());
-            DebugActionsDTO<CardActionsInfo> cardNotFound = new DebugActionsDTO<>(input.getCommand(),info,input.getTimestamp());
+            NotFoundError info = new NotFoundError("Card not found", input.getTimestamp());
+            DebugActionsDTO<NotFoundError> cardNotFound = new DebugActionsDTO<>(input.getCommand(),info,input.getTimestamp());
             JsonOutManager.getInstance().addToOutput(cardNotFound);
             return;
         }

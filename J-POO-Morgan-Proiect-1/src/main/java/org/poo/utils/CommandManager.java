@@ -5,6 +5,8 @@ import org.poo.command.Command;
 import org.poo.command.SetMinBalance;
 import org.poo.command.debug.PrintTransaction;
 import org.poo.command.debug.PrintUsers;
+import org.poo.command.report.Report;
+import org.poo.command.report.SpendingReport;
 import org.poo.command.transaction.*;
 import org.poo.fileio.UserInput;
 
@@ -44,6 +46,13 @@ public class CommandManager {
                 return new ChangeInterestRate();
             case "splitPayment":
                 return new SplitPayment();
+            case "report":
+                return new Report();
+            case "spendingsReport":
+                return new SpendingReport();
+            case "addInterest":
+                return new AddInterest();
+
 
 
         }

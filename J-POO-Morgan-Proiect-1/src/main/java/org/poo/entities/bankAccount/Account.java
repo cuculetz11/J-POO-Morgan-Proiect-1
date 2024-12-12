@@ -3,11 +3,14 @@ package org.poo.entities.bankAccount;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.poo.entities.CurrencyPair;
+import org.poo.entities.Merchant;
 import org.poo.entities.card.Card;
+import org.poo.entities.transaction.Transaction;
 import org.poo.entities.user.User;
 import org.poo.services.AccountServices;
 import org.poo.utils.Utils;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public abstract class Account implements AccountObserver {
@@ -20,6 +23,8 @@ public abstract class Account implements AccountObserver {
     private String currency;
     private String type;
     private LinkedHashMap<String, Card> cards;
+    @JsonIgnore
+    private ArrayList<Transaction> transactionsHistory;
     public Account( double balance, String currency, String type) {
         this.IBAN = Utils.generateIBAN();
         this.balance = balance;
@@ -27,6 +32,7 @@ public abstract class Account implements AccountObserver {
         this.type = type;
         this.cards = new LinkedHashMap<>();
         this.minimumBalance = 0;
+        this.transactionsHistory = new ArrayList<>();
     }
 
     public void transfer(Account receiver, double amount) {
@@ -104,4 +110,13 @@ public abstract class Account implements AccountObserver {
     public User getUser() {
         return user;
     }
+
+    public ArrayList<Transaction> getTransactionsHistory() {
+        return transactionsHistory;
+    }
+
+    public void setTransactionsHistory(ArrayList<Transaction> transactionsHistory) {
+        this.transactionsHistory = transactionsHistory;
+    }
+
 }

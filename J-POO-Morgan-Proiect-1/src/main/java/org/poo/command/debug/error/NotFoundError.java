@@ -1,9 +1,9 @@
-package org.poo.command.debug.dto;
+package org.poo.command.debug.error;
 
-public class CardActionsInfo {
+public class NotFoundError {
     private String description;
     private  int timestamp;
-    public CardActionsInfo(String description, int timestamp) {
+    public NotFoundError(String description, int timestamp) {
         this.description = description;
         this.timestamp = timestamp;
     }

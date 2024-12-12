@@ -1,6 +1,6 @@
 package org.poo.services.payment;
 
-import org.poo.command.debug.dto.CardActionsInfo;
+import org.poo.command.debug.error.NotFoundError;
 import org.poo.command.debug.dto.DebugActionsDTO;
 import org.poo.entities.Bank;
 import org.poo.entities.CurrencyPair;
@@ -10,6 +10,7 @@ import org.poo.entities.transaction.Transaction;
 import org.poo.fileio.CommandInput;
 import org.poo.services.AccountServices;
 import org.poo.services.BankingServices;
+import org.poo.utils.ErrorManager;
 import org.poo.utils.JsonOutManager;
 
 public class CardPaymentStrategy implements PaymentStrategy{
@@ -19,9 +20,7 @@ public class CardPaymentStrategy implements PaymentStrategy{
         BankingServices bankingServices = new BankingServices();
         Card card = Bank.getInstance().getCards().get(input.getCardNumber());
         if (card == null) {
-            CardActionsInfo info = new CardActionsInfo("Card not found", input.getTimestamp());
-            DebugActionsDTO<CardActionsInfo> cardNotFound = new DebugActionsDTO<>(input.getCommand(), info, input.getTimestamp());
-            JsonOutManager.getInstance().addToOutput(cardNotFound);
+            ErrorManager.notFound("Card not found",input.getCommand(), input.getTimestamp());
             return true;
         }
         this.card = card;
@@ -42,6 +41,7 @@ public class CardPaymentStrategy implements PaymentStrategy{
         this.amountToPay = amountToPay;
         Transaction transaction = new CardPayment(amountToPay, input.getCommerciant(), input.getTimestamp());
         bankingServices.addTransactionHistory(transaction,input.getEmail());
+        accountServices.addTransactionToHistory(card.getAccount().getIBAN(),transaction);
         return false;
     }
     @Override

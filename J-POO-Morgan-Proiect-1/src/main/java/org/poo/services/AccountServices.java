@@ -1,10 +1,14 @@
 package org.poo.services;
 
 import org.poo.entities.Bank;
+import org.poo.entities.Merchant;
 import org.poo.entities.bankAccount.Account;
 import org.poo.entities.CurrencyPair;
+import org.poo.entities.bankAccount.SavingsAccount;
+import org.poo.entities.transaction.Transaction;
 
 
+import javax.xml.transform.stax.StAXResult;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -51,8 +55,8 @@ public class AccountServices {
         for(String neighbour : neighbours) {
             if (!visited.contains(neighbour)) {
                 CurrencyPair currencyPair = new CurrencyPair(from, neighbour);
-                rate = rate * rates.get(currencyPair);
-                exchangeCurrencyDFS(neighbour,to,visited,rate,rates,currencies,searchedPair);
+                double newRate = rate * rates.get(currencyPair);
+                exchangeCurrencyDFS(neighbour,to,visited,newRate,rates,currencies,searchedPair);
                 //am pus perechea cautata deja n map
                 if (rates.containsKey(searchedPair)) {
                     return;
@@ -65,5 +69,9 @@ public class AccountServices {
         Account account = Bank.getInstance().getUsers().get(userEmail).getAccounts().get(IBAN);
         Bank.getInstance().getUsers().get(userEmail).getAccounts().put(alias, account);
         Bank.getInstance().getAccounts().put(alias, account);
+    }
+    public void addTransactionToHistory(String IBAN, Transaction transaction) {
+        Account account = Bank.getInstance().getAccounts().get(IBAN);
+        account.getTransactionsHistory().add(transaction);
     }
 }

@@ -30,12 +30,8 @@ public class BankingServices {
         }
         Bank.getInstance().getTransactionHistory().get(userEmail).add(transaction);
     }
-    public void addCard(Card card, String userEmail, String accountNameorIBAN) {
-        Account account = Bank.getInstance().getUsers().get(userEmail).getAccounts().get(accountNameorIBAN);
-        if (account == null) {
-            //err
-            return;
-        }
+    public void addCard(Card card, Account account) {
+
         card.setAccount(account);
         account.getCards().put(card.getCardNumber(), card);
         Bank.getInstance().getCards().put(card.getCardNumber(), card);
@@ -57,8 +53,9 @@ public class BankingServices {
      */
     public boolean removeAccount(String emailUser, String accountNameorIBAN) {
         Account account = Bank.getInstance().getUsers().get(emailUser).getAccounts().get(accountNameorIBAN);
-        if(account.getBalance() != 0)
+        if(account.getBalance() != 0) {
             return false;
+            }
         for(Card c : account.getCards().values()) {
             Bank.getInstance().getCards().remove(c.getCardNumber());
         }
@@ -71,10 +68,10 @@ public class BankingServices {
         Map<String, Account> userAccounts = Bank.getInstance().getUsers().get(emailUser).getAccounts();
         for (Account account : userAccounts.values()) {
             if (account.getCards().containsKey(cardNumber)) {
+                Bank.getInstance().getCardDeletedHistory().put(cardNumber, account.getCards().get(cardNumber));
                 account.getCards().remove(cardNumber);
                 Bank.getInstance().getCards().remove(cardNumber);
-            } else {
-                //mesaj eroare
+                break;
             }
         }
     }

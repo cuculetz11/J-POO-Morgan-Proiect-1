@@ -1,8 +1,10 @@
 package org.poo.entities.bankAccount;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.poo.fileio.CommandInput;
 
 public class SavingsAccount extends Account {
+    @JsonIgnore
     private double interestRate;
     public SavingsAccount(CommandInput input) {
         super(0, input.getCurrency(), "savings");
@@ -19,5 +21,9 @@ public class SavingsAccount extends Account {
 
     public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
     }
 }
