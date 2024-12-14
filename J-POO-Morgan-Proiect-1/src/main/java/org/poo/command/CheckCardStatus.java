@@ -1,33 +1,31 @@
 package org.poo.command;
 
-import org.poo.command.debug.error.NotFoundError;
 import org.poo.command.debug.dto.DebugActionsDTO;
+import org.poo.command.debug.error.NotFoundError;
 import org.poo.entities.Bank;
 import org.poo.entities.card.Card;
 import org.poo.entities.transaction.Transaction;
 import org.poo.fileio.CommandInput;
-import org.poo.services.BankingServices;
+import org.poo.utils.Constants;
+import org.poo.utils.ErrorManager;
 import org.poo.utils.JsonOutManager;
 
-public class CheckCardStatus implements Command{
+public class CheckCardStatus implements Command {
     @Override
-    public void execute(CommandInput input) {
-        BankingServices bankingServices = new BankingServices();
+    public void execute(final CommandInput input) {
         Card card = Bank.getInstance().getCards().get(input.getCardNumber());
         if (card == null) {
-            NotFoundError info = new NotFoundError("Card not found", input.getTimestamp());
-            DebugActionsDTO<NotFoundError> cardNotFound = new DebugActionsDTO<>(input.getCommand(),info,input.getTimestamp());
-            JsonOutManager.getInstance().addToOutput(cardNotFound);
+            ErrorManager.notFound(Constants.CARD_NOT_FOUND, input.getCommand(), input.getTimestamp());
             return;
         }
-        if(card.getStatus().equals("frozen") && card.getAccount().verifyBalance()){
+        if (card.getStatus().equals("frozen") && card.getAccount().verifyBalance()) {
             return;
         }
-        if(card.getAccount().verifyBalance()) {
+        if (card.getAccount().verifyBalance()) {
             card.setStatus("frozen");
             //CardActionsInfo info = new CardActionsInfo("You have reached the minimum amount of funds, the card will be frozen", input.getTimestamp());
             Transaction transaction = new Transaction(input.getTimestamp(), "You have reached the minimum amount of funds, the card will be frozen");
-            bankingServices.addTransactionHistory(transaction,card.getAccount().getUser().getEmail());
+            bankingServices.addTransactionHistory(transaction, card.getAccount().getUser().getEmail());
         }
 
     }

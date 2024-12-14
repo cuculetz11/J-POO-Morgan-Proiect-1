@@ -12,31 +12,34 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class BankingServices {
-    public void acceptVisitor(BankMethods visitor) {
+    public void acceptVisitor(final BankMethods visitor) {
         visitor.visit(Bank.getInstance());
     }
-    public void performCommand(CommandInput input) {
+
+    public void performCommand(final CommandInput input) {
         Command c = CommandManager.getConcreteCommand(input.getCommand());
         c.execute(input);
     }
-    public void addAccount(Account account, String accountNameorIBAN, String userEmail) {
+
+    public void addAccount(final Account account, final String accountNameorIBAN, final String userEmail) {
         account.setUser(Bank.getInstance().getUsers().get(userEmail));
         Bank.getInstance().getUsers().get(userEmail).getAccounts().put(accountNameorIBAN, account);
         Bank.getInstance().getAccounts().put(accountNameorIBAN, account);
     }
-    public void addTransactionHistory(Transaction transaction, String userEmail) {
-        if (Bank.getInstance().getTransactionHistory().get(userEmail) == null) {
-             Bank.getInstance().getTransactionHistory().put(userEmail, new ArrayList<>());
-        }
+
+    public void addTransactionHistory(final Transaction transaction, final String userEmail) {
+        Bank.getInstance().getTransactionHistory().computeIfAbsent(userEmail, k -> new ArrayList<>());
         Bank.getInstance().getTransactionHistory().get(userEmail).add(transaction);
     }
-    public void addCard(Card card, Account account) {
+
+    public void addCard(final Card card, final Account account) {
 
         card.setAccount(account);
         account.getCards().put(card.getCardNumber(), card);
         Bank.getInstance().getCards().put(card.getCardNumber(), card);
     }
-    public void addFounds(String accountNameorIBAN, double amount) {
+
+    public void addFounds(final String accountNameorIBAN, final double amount) {
         Account account = Bank.getInstance().getAccounts().get(accountNameorIBAN);
         if (account == null) {
             //err
@@ -47,16 +50,17 @@ public class BankingServices {
 
     /**
      * Sterge contul si cardurile lui daca balata sa este 0
-     * @param emailUser emailul user-ului
+     *
+     * @param emailUser         emailul user-ului
      * @param accountNameorIBAN IBAN-ul sau alias-ul contului
      * @return
      */
-    public boolean removeAccount(String emailUser, String accountNameorIBAN) {
+    public boolean removeAccount(final String emailUser, final String accountNameorIBAN) {
         Account account = Bank.getInstance().getUsers().get(emailUser).getAccounts().get(accountNameorIBAN);
-        if(account.getBalance() != 0) {
+        if (account.getBalance() != 0) {
             return false;
-            }
-        for(Card c : account.getCards().values()) {
+        }
+        for (Card c : account.getCards().values()) {
             Bank.getInstance().getCards().remove(c.getCardNumber());
         }
         account.getCards().clear();
@@ -64,7 +68,8 @@ public class BankingServices {
         Bank.getInstance().getAccounts().remove(accountNameorIBAN);
         return true;
     }
-    public void deleteCard(String emailUser, String cardNumber) {
+
+    public void deleteCard(final String emailUser, final String cardNumber) {
         Map<String, Account> userAccounts = Bank.getInstance().getUsers().get(emailUser).getAccounts();
         for (Account account : userAccounts.values()) {
             if (account.getCards().containsKey(cardNumber)) {

@@ -1,28 +1,21 @@
 package org.poo.entities.transaction;
 
-import java.util.ArrayList;
+import lombok.Getter;
+
 import java.util.List;
 
-public class SplitPayment extends Transaction{
-    private String currency;
-    private double amount;
-    private List<String> involvedAccounts;
-    public SplitPayment(int timestamp, String currency, double amount, List<String> involvedAccounts, String description) {
-        super(timestamp,description);
+@Getter
+public class SplitPayment extends Transaction {
+    private final String currency;
+    private final double amount;
+    private final List<String> involvedAccounts;
+
+    public SplitPayment(final int timestamp, final String currency, final double amount,
+                        final List<String> involvedAccounts, final String description) {
+        super(timestamp, description);
         this.currency = currency;
         this.amount = amount;
         this.involvedAccounts = involvedAccounts;
     }
 
-    public String getCurrency() {
-        return currency;
-    }
-
-    public List<String> getInvolvedAccounts() {
-        return involvedAccounts;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
 }

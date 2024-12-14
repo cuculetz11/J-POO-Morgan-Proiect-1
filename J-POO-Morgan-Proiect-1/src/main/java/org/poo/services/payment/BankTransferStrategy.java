@@ -6,53 +6,54 @@ import org.poo.entities.bankAccount.Account;
 import org.poo.entities.transaction.Transaction;
 import org.poo.entities.transaction.Transfer;
 import org.poo.fileio.CommandInput;
-import org.poo.services.AccountServices;
-import org.poo.services.BankingServices;
+import org.poo.utils.Constants;
 
-public class BankTransferStrategy implements PaymentStrategy{
+public class BankTransferStrategy implements PaymentStrategy {
     private Account sender;
     private Account receiver;
     private double amount;
 
 
     @Override
-    public boolean checkForErrors(CommandInput input) {
-        BankingServices bankingServices = new BankingServices();
-        AccountServices accountServices = new AccountServices();
+    public boolean checkForErrors(final CommandInput input) {
+
         Account sender = Bank.getInstance().getAccounts().get(input.getAccount());
-        if(sender == null) {
+        if (sender == null) {
             return true;
         }
         Account receiver = Bank.getInstance().getAccounts().get(input.getReceiver());
-        if(receiver == null) {
+        if (receiver == null) {
             return true;
         }
         if (input.getAccount().chars().allMatch(Character::isLetter))
             return true;
         //execceptii probabil
-        if (!sender.isTransferPossible(input.getAmount())) {
-            Transaction transaction = new Transaction(input.getTimestamp(), "Insufficient funds");
-            bankingServices.addTransactionHistory(transaction,input.getEmail());
-            accountServices.addTransactionToHistory(sender.getIBAN(),transaction);
+        if (sender.isTransferPossible(input.getAmount())) {
+            Transaction transaction = new Transaction(input.getTimestamp(), Constants.INSUFFICIENT_FUNDS);
+            bankingServices.addTransactionHistory(transaction, input.getEmail());
+            accountServices.addTransactionToHistory(sender.getIban(), transaction);
             return true;
         }
         this.receiver = receiver;
         this.sender = sender;
         this.amount = input.getAmount();
-        String money = String.valueOf(input.getAmount()) + " " + sender.getCurrency();
-        Transaction sentTransaction = new Transfer(input.getTimestamp(), input.getDescription(), sender.getIBAN(), receiver.getIBAN(), money, "sent");
+
+        String money = input.getAmount() + " " + sender.getCurrency();
+        Transaction sentTransaction = new Transfer(input.getTimestamp(), input.getDescription(), sender.getIban(), receiver.getIban(), money, Constants.SENT);
         bankingServices.addTransactionHistory(sentTransaction, sender.getUser().getEmail());
         accountServices.addTransactionToHistory(input.getAccount(), sentTransaction);
+
         double exchangedAmount = accountServices.exchangeCurrency(new CurrencyPair(sender.getCurrency(), receiver.getCurrency()), amount);
-        String exchangedMoney = String.valueOf(exchangedAmount + " " + receiver.getCurrency());
-        Transaction receivedTransaction = new Transfer(input.getTimestamp(), input.getDescription(), sender.getIBAN(), receiver.getIBAN(), exchangedMoney, "received");
-        bankingServices.addTransactionHistory(receivedTransaction , receiver.getUser().getEmail());
-        accountServices.addTransactionToHistory(receiver.getIBAN(), receivedTransaction);
+        String exchangedMoney = exchangedAmount + " " + receiver.getCurrency();
+
+        Transaction receivedTransaction = new Transfer(input.getTimestamp(), input.getDescription(), sender.getIban(), receiver.getIban(), exchangedMoney, Constants.RECEIVED);
+        bankingServices.addTransactionHistory(receivedTransaction, receiver.getUser().getEmail());
+        accountServices.addTransactionToHistory(receiver.getIban(), receivedTransaction);
         return false;
     }
 
     @Override
     public void pay() {
-        sender.transfer(receiver,amount);
+        sender.transfer(receiver, amount);
     }
 }

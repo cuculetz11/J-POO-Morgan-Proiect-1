@@ -1,13 +1,17 @@
 package org.poo.entities.transaction;
 
-public class Transfer extends Transaction {
-    String senderIBAN;
-    String receiverIBAN;
-    String amount;
-    String transferType;
+import lombok.Getter;
 
-    public Transfer(int timestamp,String description, String senderIBAN, String receiverIBAN, String amount, String transferType) {
-        super(timestamp,description);
+@Getter
+public class Transfer extends Transaction {
+    private final  String senderIBAN;
+    private final  String receiverIBAN;
+    private final String amount;
+    private final String transferType;
+
+    public Transfer(final int timestamp, final String description, final String senderIBAN,
+                    final String receiverIBAN, final String amount, final String transferType) {
+        super(timestamp, description);
         this.senderIBAN = senderIBAN;
         this.receiverIBAN = receiverIBAN;
         this.amount = amount;
@@ -15,19 +19,4 @@ public class Transfer extends Transaction {
 
     }
 
-    public String getSenderIBAN() {
-        return senderIBAN;
-    }
-
-    public String getTransferType() {
-        return transferType;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public String getReceiverIBAN() {
-        return receiverIBAN;
-    }
 }

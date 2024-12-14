@@ -10,19 +10,31 @@ public final class JsonOutManager {
 
     private JsonOutManager() {
     }
+
+    /**
+     * Obtine instanta singleton a clasei JsonOutManager
+     * @return instanta unica JsonOutManager
+     */
     public static JsonOutManager getInstance() {
         if (instance == null) {
             instance = new JsonOutManager();
         }
         return instance;
     }
+
     public ArrayNode getOutput() {
         return output;
     }
-    public void setOutput(ArrayNode output) {
+
+    public void setOutput(final ArrayNode output) {
         this.output = output;
     }
-    public void addToOutput(Object object) {
+
+    /**
+     * Prin aceasta metoda adug direct obictul ce vreau sa-l pun in output
+     * @param object obiectul de adugat la output
+     */
+    public void addToOutput(final Object object) {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.valueToTree(object);
         this.output.add(node);

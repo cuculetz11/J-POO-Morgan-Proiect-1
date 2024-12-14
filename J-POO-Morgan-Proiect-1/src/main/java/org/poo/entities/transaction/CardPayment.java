@@ -1,20 +1,16 @@
 package org.poo.entities.transaction;
 
-public class CardPayment extends Transaction {
-    private double amount;
-    private String commerciant;
+import lombok.Getter;
 
-    public CardPayment(double amount, String commerciant, int timestamp) {
-        super(timestamp,"Card payment");
+@Getter
+public class CardPayment extends Transaction {
+    private final double amount;
+    private final String commerciant;
+
+    public CardPayment(final double amount, final String commerciant, final int timestamp) {
+        super(timestamp, "Card payment");
         this.amount = amount;
         this.commerciant = commerciant;
     }
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getCommerciant() {
-        return commerciant;
-    }
 }

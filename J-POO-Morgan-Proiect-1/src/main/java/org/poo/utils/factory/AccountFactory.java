@@ -7,13 +7,10 @@ import org.poo.fileio.CommandInput;
 
 public class AccountFactory {
     public static Account getAccount(CommandInput input) {
-        switch (input.getAccountType()) {
-            case "classic":
-                return new ClassicAcount(input);
-            case "savings":
-                return new SavingsAccount(input);
-            default:
-                return null;
-        }
+        return switch (input.getAccountType()) {
+            case "classic" -> new ClassicAcount(input);
+            case "savings" -> new SavingsAccount(input);
+            default -> null;
+        };
     }
 }

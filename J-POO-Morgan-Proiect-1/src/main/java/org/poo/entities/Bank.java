@@ -10,15 +10,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Bank {
+public final class Bank {
     private static Bank instance = null;
     private LinkedHashMap<String, User> users;
     private Map<String, Account> accounts;
     private Map<String, Card> cards;
     private ExchangeRates exchangeRates;
     private Map<String, ArrayList<Transaction>> transactionHistory;
-    private Map<String,Card> cardDeletedHistory;
+    private Map<String, Card> cardDeletedHistory;
     private int currentTimestamp;
+
     private Bank() {
         users = new LinkedHashMap<>();
         exchangeRates = new ExchangeRates();
@@ -27,12 +28,14 @@ public class Bank {
         cards = new HashMap<>();
         cardDeletedHistory = new HashMap<>();
     }
+
     public static Bank getInstance() {
         if (instance == null) {
             instance = new Bank();
         }
         return instance;
     }
+
     public void reset() {
         users = new LinkedHashMap<>();
         accounts = new HashMap<>();

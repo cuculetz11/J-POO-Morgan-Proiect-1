@@ -6,14 +6,16 @@ import org.poo.fileio.UserInput;
 import org.poo.services.BankMethods;
 
 public class UserInitialize implements BankMethods {
-    private UserInput[] userInputs;
-    public UserInitialize(UserInput[] userInputs) {
+    private final UserInput[] userInputs;
+
+    public UserInitialize(final UserInput[] userInputs) {
         this.userInputs = userInputs;
     }
-    public void visit(Bank bank) {
-        for(UserInput userInput : userInputs) {
+
+    public void visit(final Bank bank) {
+        for (UserInput userInput : userInputs) {
             User user = new User(userInput);
-            bank.getUsers().put(user.getEmail(),user);
+            bank.getUsers().put(user.getEmail(), user);
         }
     }
 }

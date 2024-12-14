@@ -10,10 +10,9 @@ import org.poo.services.payment.PaymentStrategy;
 
 public class SendMoney implements Command {
     @Override
-    public void execute(CommandInput input) {
-        BankingServices bankingServices = new BankingServices();
+    public void execute(final CommandInput input) {
         PaymentStrategy bankTransfer = new BankTransferStrategy();
-        if(bankTransfer.checkForErrors(input))
+        if (bankTransfer.checkForErrors(input))
             return;
         BankMethods transfer = new PaymentMethod(bankTransfer);
         bankingServices.acceptVisitor(transfer);

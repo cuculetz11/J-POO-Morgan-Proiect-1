@@ -1,12 +1,10 @@
 package org.poo.command;
 
 import org.poo.fileio.CommandInput;
-import org.poo.services.AccountServices;
 
-public class SetMinBalance implements Command{
+public class SetMinBalance implements Command {
     @Override
-    public void execute(CommandInput input) {
-        AccountServices accountServices = new AccountServices();
+    public void execute(final CommandInput input) {
         accountServices.setMinBalance(input.getAccount(), input.getAmount());
     }
 }

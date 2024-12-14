@@ -10,10 +10,9 @@ import org.poo.services.payment.SplitPaymentStrategy;
 
 public class SplitPayment implements Command {
     @Override
-    public void execute(CommandInput input) {
-        BankingServices bankingServices = new BankingServices();
+    public void execute(final CommandInput input) {
         PaymentStrategy split = new SplitPaymentStrategy();
-        if(split.checkForErrors(input)){
+        if (split.checkForErrors(input)) {
             return;
         }
         BankMethods pay = new PaymentMethod(split);

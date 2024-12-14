@@ -1,24 +1,18 @@
 package org.poo.entities.transaction;
 
+import lombok.Getter;
+
+@Getter
 public class LifeOfACard extends Transaction {
-    private String card;
-    private String cardHolder;
-    private String account;
-    public LifeOfACard(String description, String card, String holder, int timestamp, String account) {
-        super(timestamp,description);
+    private final String card;
+    private final String cardHolder;
+    private final String account;
+
+    public LifeOfACard(final String description, final String card, final String holder, final int timestamp, String account) {
+        super(timestamp, description);
         this.card = card;
         this.cardHolder = holder;
         this.account = account;
     }
 
-    public String getCard() {
-        return card;
-    }
-
-    public String getCardHolder() {
-        return cardHolder;
-    }
-    public String getAccount() {
-        return account;
-    }
 }

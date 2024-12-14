@@ -1,18 +1,15 @@
 package org.poo.entities.transaction;
 
+import lombok.Getter;
+
+@Getter
 public class Transaction {
-    private int timestamp;
-    private String description;
-    public Transaction(int timestamp, String description) {
+    private final int timestamp;
+    private final String description;
+
+    public Transaction(final int timestamp, final String description) {
         this.timestamp = timestamp;
         this.description = description;
     }
 
-    public int getTimestamp() {
-        return timestamp;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 }

@@ -3,24 +3,25 @@ package org.poo.entities.card;
 import org.poo.command.transaction.CreateCard;
 import org.poo.command.transaction.DeleteCard;
 import org.poo.entities.Bank;
-import org.poo.entities.transaction.Transaction;
 import org.poo.fileio.CommandInput;
-import org.poo.services.BankingServices;
 
 public class OneTimePayCard extends Card {
     public OneTimePayCard() {
         super();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void pay(double amount) {
+    public void pay(final double amount) {
 
         super.getAccount().setBalance(super.getAccount().getBalance() - amount);
         String userEmail = super.getAccount().getUser().getEmail();
-        String IBAN = super.getAccount().getIBAN();
+        String iban = super.getAccount().getIban();
 
         CommandInput inputCreate = new CommandInput();
-        inputCreate.setAccount(IBAN);
+        inputCreate.setAccount(iban);
         inputCreate.setEmail(userEmail);
         inputCreate.setCommand("createOneTimeCard");
         inputCreate.setTimestamp(Bank.getInstance().getCurrentTimestamp());

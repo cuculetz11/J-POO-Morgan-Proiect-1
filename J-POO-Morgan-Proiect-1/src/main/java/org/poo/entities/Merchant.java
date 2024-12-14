@@ -1,19 +1,15 @@
 package org.poo.entities;
 
+import lombok.Getter;
+
+@Getter
 public class Merchant {
-    private String commerciant;
+    private final String commerciant;
     private double total;
-    public Merchant(String commerciant, double amount) {
+
+    public Merchant(final String commerciant, final double amount) {
         this.commerciant = commerciant;
         this.total = amount;
-    }
-
-    public String getCommerciant() {
-        return commerciant;
-    }
-
-    public double getTotal() {
-        return total;
     }
 
     public void setTotal(double total) {

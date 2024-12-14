@@ -1,27 +1,18 @@
 package org.poo.command.debug.dto;
 
-public class DeleteAccountDTO implements AccountDeleteInfo{
-    private String success;
+import lombok.Getter;
+
+@Getter
+public class DeleteAccountDTO implements AccountDeleteInfo {
+    private final String success;
     private int timestamp;
 
-    public DeleteAccountDTO(String succes, int timestamp) {
+    public DeleteAccountDTO(final String succes, final int timestamp) {
         this.success = succes;
         this.timestamp = timestamp;
     }
 
-    public String getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(String success) {
-        this.success = success;
-    }
-
-    public int getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp( final int timestamp) {
         this.timestamp = timestamp;
     }
 }

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class PrintTransaction implements Command {
     @Override
-    public void execute(CommandInput input) {
+    public void execute(final CommandInput input) {
         ArrayList<Transaction> transactions = Bank.getInstance().getTransactionHistory().get(input.getEmail());
-        DebugDTO<Transaction> printTransaction = new DebugDTO<Transaction>(input.getCommand(),transactions, input.getTimestamp());
+        DebugDTO<Transaction> printTransaction = new DebugDTO<Transaction>(input.getCommand(), transactions, input.getTimestamp());
         JsonOutManager.getInstance().addToOutput(printTransaction);
     }
 }
