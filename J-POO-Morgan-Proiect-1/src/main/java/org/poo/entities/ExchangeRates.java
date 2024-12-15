@@ -1,9 +1,12 @@
 package org.poo.entities;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class ExchangeRates {
     private final Map<CurrencyPair, Double> rates;
     private final Map<String, ArrayList<String>> currencies;
@@ -13,11 +16,4 @@ public class ExchangeRates {
         this.currencies = new HashMap<>();
     }
 
-    public Map<CurrencyPair, Double> getRates() {
-        return rates;
-    }
-
-    public Map<String, ArrayList<String>> getCurrencies() {
-        return currencies;
-    }
 }

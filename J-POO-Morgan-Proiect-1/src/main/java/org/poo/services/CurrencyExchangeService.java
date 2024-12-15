@@ -2,30 +2,31 @@ package org.poo.services;
 
 import org.poo.entities.Bank;
 import org.poo.entities.CurrencyPair;
-import org.poo.entities.bankAccount.Account;
-import org.poo.entities.transaction.Transaction;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 
-public class AccountServices {
-    public void setMinBalance(final String iban, final double minBalance) {
-        Bank.getInstance().getAccounts().get(iban).setMinimumBalance(minBalance);
-    }
-
+public class CurrencyExchangeService {
+    /**
+     * Efectuam schimbul valutar necesar
+     * @param currencyPair perechea pentru care se realizaeza schimbul valutar
+     * @param amount suma
+     * @return returneaza suma schimbata
+     */
     public double exchangeCurrency(final CurrencyPair currencyPair, final double amount) {
         if (currencyPair.getFrom().equals(currencyPair.getTo())) {
             return amount;
         }
         Map<CurrencyPair, Double> rates = Bank.getInstance().getExchangeRates().getRates();
-        Map<String, ArrayList<String>> currencies = Bank.getInstance().getExchangeRates().getCurrencies();
+        Map<String, ArrayList<String>> currencies = Bank.getInstance().getExchangeRates()
+                .getCurrencies();
         if (rates.containsKey(currencyPair)) {
-            double rate = rates.get(currencyPair);
             return rates.get(currencyPair) * amount;
         }
         HashSet<String> visited = new HashSet<>();
-        exchangeCurrencyDFS(currencyPair.getFrom(), currencyPair.getTo(), visited, 1, rates, currencies, currencyPair);
+        exchangeCurrencyDFS(currencyPair.getFrom(), currencyPair.getTo(), visited, 1, rates,
+                currencies, currencyPair);
         double rate = rates.get(currencyPair);
         CurrencyPair inverse = new CurrencyPair(currencyPair.getTo(), currencyPair.getFrom());
         rates.put(inverse, 1 / rate);
@@ -36,8 +37,11 @@ public class AccountServices {
         return amount * rate;
     }
 
-    /*
-    Adaug direct in banca rate-ul gasit precum si noua legatura pentru ca poate am nevoie mai tarziu iarasi de ea si sa nu fac iar dfs
+    /**
+     * Adaug direct in banca rate-ul gasit precum si noua pereche pentru ca poate am nevoie mai
+     * tarziu iarasi de ea
+     * Facand acest map si introducand in el noua pereche precum si perchea inversa ma scuteste sa
+     * fac iar dfs daca mai am nevoie de acest schimb valutar
      */
     public void exchangeCurrencyDFS(final String from, final String to,
                                     final HashSet<String> visited,
@@ -58,24 +62,13 @@ public class AccountServices {
             if (!visited.contains(neighbour)) {
                 CurrencyPair currencyPair = new CurrencyPair(from, neighbour);
                 double newRate = rate * rates.get(currencyPair);
-                exchangeCurrencyDFS(neighbour, to, visited, newRate, rates, currencies, searchedPair);
-                //am pus perechea cautata deja n map
+                exchangeCurrencyDFS(neighbour, to, visited, newRate, rates, currencies,
+                        searchedPair);
                 if (rates.containsKey(searchedPair)) {
                     return;
                 }
             }
         }
 
-    }
-
-    public void setAlias(final String userEmail, final String iban, final String alias) {
-        Account account = Bank.getInstance().getUsers().get(userEmail).getAccounts().get(iban);
-        Bank.getInstance().getUsers().get(userEmail).getAccounts().put(alias, account);
-        Bank.getInstance().getAccounts().put(alias, account);
-    }
-
-    public void addTransactionToHistory(final String iban, final Transaction transaction) {
-        Account account = Bank.getInstance().getAccounts().get(iban);
-        account.getTransactionsHistory().add(transaction);
     }
 }

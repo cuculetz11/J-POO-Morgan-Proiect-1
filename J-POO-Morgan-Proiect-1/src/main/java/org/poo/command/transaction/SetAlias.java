@@ -1,12 +1,21 @@
 package org.poo.command.transaction;
 
 import org.poo.command.Command;
+import org.poo.entities.Bank;
+import org.poo.entities.bankAccount.Account;
 import org.poo.fileio.CommandInput;
-import org.poo.services.AccountServices;
 
 public class SetAlias implements Command {
+    /**
+     * Se pune un alias unui cont
+     * @param input obiectul ce contine informatiile ncesare pentru a efectua comanda
+     */
     @Override
     public void execute(final CommandInput input) {
-        accountServices.setAlias(input.getEmail(), input.getAccount(), input.getAlias());
+        Account account = Bank.getInstance().getUsers().get(input.getEmail()).getAccounts()
+                .get(input.getAccount());
+        Bank.getInstance().getUsers().get(input.getEmail()).getAccounts()
+                .put(input.getAlias(), account);
+        Bank.getInstance().getAccounts().put(input.getAlias(), account);
     }
 }

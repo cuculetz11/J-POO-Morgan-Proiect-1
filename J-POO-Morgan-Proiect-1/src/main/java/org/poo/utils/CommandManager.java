@@ -19,29 +19,29 @@ public final class CommandManager {
 
     /**
      *
-     * @param commandName
+     * @param commandName numele comenzii
      * @return retureneaza o clasa ce va executa o comanda specifica
      */
     public static Command getConcreteCommand(final String commandName) {
         return switch (commandName) {
-            case "printUsers" -> new PrintUsers();
-            case "addAccount" -> new AddAccount();
-            case "createCard", "createOneTimeCard" -> new CreateCard();
-            case "addFunds" -> new AddFounds();
-            case "deleteAccount" -> new DeleteAccount();
-            case "deleteCard" -> new DeleteCard();
-            case "setMinimumBalance" -> new SetMinBalance();
-            case "payOnline" -> new PayOnline();
-            case "sendMoney" -> new SendMoney();
-            case "setAlias" -> new SetAlias();
-            case "printTransactions" -> new PrintTransaction();
-            case "checkCardStatus" -> new CheckCardStatus();
-            case "changeInterestRate" -> new ChangeInterestRate();
-            case "splitPayment" -> new SplitPayment();
-            case "report" -> new Report();
-            case "spendingsReport" -> new SpendingReport();
-            case "addInterest" -> new AddInterest();
-            default -> throw new IllegalArgumentException("Command not found");
+            case Constants.PRINT_USERS -> new PrintUsers();
+            case Constants.ADD_ACCOUNT -> new AddAccount();
+            case Constants.CREATE_CARD, Constants.CREATE_ONE_TIME_CARD -> new CreateCard();
+            case Constants.ADD_FUNDS -> new AddFounds();
+            case Constants.DELETE_ACCOUNT -> new DeleteAccount();
+            case Constants.DELETE_CARD -> new DeleteCard();
+            case Constants.SET_MINIMUM_BALANCE -> new SetMinBalance();
+            case Constants.PAY_ONLINE -> new PayOnline();
+            case Constants.SEND_MONEY -> new SendMoney();
+            case Constants.SET_ALIAS -> new SetAlias();
+            case Constants.PRINT_TRANSACTIONS -> new PrintTransaction();
+            case Constants.CHECK_CARD_STATUS -> new CheckCardStatus();
+            case Constants.CHANGE_INTEREST_RATE -> new ChangeInterestRate();
+            case Constants.SPLIT_PAYMENT -> new SplitPayment();
+            case Constants.REPORT -> new Report();
+            case Constants.SPENDINGS_REPORT -> new SpendingReport();
+            case Constants.ADD_INTEREST -> new AddInterest();
+            default -> throw new IllegalArgumentException(Constants.COMMAND_NOT_FOUND_ERROR);
         };
     }
 

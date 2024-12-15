@@ -10,6 +10,10 @@ public class PaymentMethod implements BankMethods {
         this.paymentStrategy = paymentStrategy;
     }
 
+    /**
+     * Reprezinta plata ce viziteaza banca
+     * @param bank banca ca parametru
+     */
     @Override
     public void visit(final Bank bank) {
         paymentStrategy.pay();

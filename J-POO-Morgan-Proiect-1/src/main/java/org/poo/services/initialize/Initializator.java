@@ -16,6 +16,9 @@ public class Initializator {
         this.exchangeInputs = exchangeInputs;
     }
 
+    /**
+     * functia ce initalizeaza toate datele din banca date la input
+     */
     public void initialize() {
         BankingServices bankingServices = new BankingServices();
         ArrayList<BankMethods> bankMethods = new ArrayList<>();

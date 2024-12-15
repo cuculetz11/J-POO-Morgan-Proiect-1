@@ -18,6 +18,10 @@ public class ExchangeRatesInitialize implements BankMethods {
         this.exchangeInput = exchangeInput;
     }
 
+    /**
+     * Initializeaza map-ul de valuta din banca
+     * @param bank banca ca parametru
+     */
     public void visit(final Bank bank) {
         for (ExchangeInput input : exchangeInput) {
             CurrencyPair currencyPair1 = new CurrencyPair(input.getFrom(), input.getTo());

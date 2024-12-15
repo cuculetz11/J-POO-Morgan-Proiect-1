@@ -14,16 +14,22 @@ import org.poo.utils.JsonOutManager;
 import java.util.ArrayList;
 
 public class Report implements Command {
+    /**
+     * Face un raport pentru contul dat
+     * @param input obiectul ce contine informatiile ncesare pentru a efectua comanda
+     */
     @Override
     public void execute(final CommandInput input) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         Account account = Bank.getInstance().getAccounts().get(input.getAccount());
 
         if (account == null) {
-            ErrorManager.notFound(Constants.ACCOUNT_NOT_FOUND, input.getCommand(), input.getTimestamp());
+            ErrorManager.notFound(Constants.ACCOUNT_NOT_FOUND, input.getCommand(),
+                    input.getTimestamp());
             return;
         }
-        ArrayList<Transaction> accountTransactions = Bank.getInstance().getAccounts().get(input.getAccount()).getTransactionsHistory();
+        ArrayList<Transaction> accountTransactions =
+                Bank.getInstance().getAccounts().get(input.getAccount()).getTransactionsHistory();
         if (accountTransactions == null) {
             return;
         }
@@ -35,8 +41,11 @@ public class Report implements Command {
                 transactions.add(transaction);
             }
         }
-        AccountHistoryDTO accountHistoryDTO = new AccountHistoryDTO(input.getAccount(), account.getBalance(), account.getCurrency(), transactions);
-        DebugActionsDTO<AccountHistoryDTO> report = new DebugActionsDTO<>(input.getCommand(), accountHistoryDTO, input.getTimestamp());
+        AccountHistoryDTO accountHistoryDTO = new AccountHistoryDTO(input.getAccount(),
+                account.getBalance(), account.getCurrency(), transactions);
+
+        DebugActionsDTO<AccountHistoryDTO> report = new DebugActionsDTO<>(input.getCommand(),
+                accountHistoryDTO, input.getTimestamp());
         JsonOutManager.getInstance().addToOutput(report);
 
     }

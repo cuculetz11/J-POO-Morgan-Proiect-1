@@ -9,6 +9,10 @@ import org.poo.services.payment.PaymentMethod;
 import org.poo.services.payment.PaymentStrategy;
 
 public class PayOnline implements Command {
+    /**
+     * Se efectueaza o plata online cu cardul
+     * @param input obiectul ce contine informatiile ncesare pentru a efectua comanda
+     */
     @Override
     public void execute(final CommandInput input) {
         Bank.getInstance().setCurrentTimestamp(input.getTimestamp());
@@ -19,7 +23,7 @@ public class PayOnline implements Command {
         }
         BankMethods pay = new PaymentMethod(cardPay);
 
-        bankingServices.acceptVisitor(pay);
+        BANKING_SERVICES.acceptVisitor(pay);
 
     }
 }

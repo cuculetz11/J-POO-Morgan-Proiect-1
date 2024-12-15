@@ -1,15 +1,17 @@
 package org.poo.entities;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.poo.entities.bankAccount.Account;
 import org.poo.entities.card.Card;
 import org.poo.entities.transaction.Transaction;
-import org.poo.entities.user.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Getter
 public final class Bank {
     private static Bank instance = null;
     private LinkedHashMap<String, User> users;
@@ -18,6 +20,7 @@ public final class Bank {
     private ExchangeRates exchangeRates;
     private Map<String, ArrayList<Transaction>> transactionHistory;
     private Map<String, Card> cardDeletedHistory;
+    @Setter
     private int currentTimestamp;
 
     private Bank() {
@@ -29,6 +32,10 @@ public final class Bank {
         cardDeletedHistory = new HashMap<>();
     }
 
+    /**
+     * Obtine instanta singleton a bancii
+     * @return obiectul unic ce reprezinta toata banca
+     */
     public static Bank getInstance() {
         if (instance == null) {
             instance = new Bank();
@@ -36,6 +43,9 @@ public final class Bank {
         return instance;
     }
 
+    /**
+     * Resetez toate campurile aceste clase singleton, altfel ar rmane de la test la test date
+     */
     public void reset() {
         users = new LinkedHashMap<>();
         accounts = new HashMap<>();
@@ -45,35 +55,4 @@ public final class Bank {
         cardDeletedHistory = new HashMap<>();
     }
 
-    public int getCurrentTimestamp() {
-        return currentTimestamp;
-    }
-
-    public void setCurrentTimestamp(int currentTimestamp) {
-        this.currentTimestamp = currentTimestamp;
-    }
-
-    public LinkedHashMap<String, User> getUsers() {
-        return users;
-    }
-
-    public ExchangeRates getExchangeRates() {
-        return exchangeRates;
-    }
-
-    public Map<String, ArrayList<Transaction>> getTransactionHistory() {
-        return transactionHistory;
-    }
-
-    public Map<String, Account> getAccounts() {
-        return accounts;
-    }
-
-    public Map<String, Card> getCards() {
-        return cards;
-    }
-
-    public Map<String, Card> getCardDeletedHistory() {
-        return cardDeletedHistory;
-    }
 }

@@ -1,12 +1,12 @@
 package org.poo.command.debug.error;
 
-public class ErrorCommand {
-    private String error;
+import lombok.Getter;
 
-    public ErrorCommand(String error) {
+@Getter
+public class ErrorCommand {
+    private final  String error;
+
+    public ErrorCommand(final String error) {
         this.error = error;
-    }
-    public String getError() {
-        return error;
     }
 }

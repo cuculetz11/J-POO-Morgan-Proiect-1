@@ -10,10 +10,16 @@ import org.poo.utils.JsonOutManager;
 import java.util.ArrayList;
 
 public class PrintTransaction implements Command {
+    /**
+     * Printeaza toate tranzactiile userului dat la input
+     * @param input obiectul ce contine informatiile ncesare pentru a efectua comanda
+     */
     @Override
     public void execute(final CommandInput input) {
-        ArrayList<Transaction> transactions = Bank.getInstance().getTransactionHistory().get(input.getEmail());
-        DebugDTO<Transaction> printTransaction = new DebugDTO<Transaction>(input.getCommand(), transactions, input.getTimestamp());
+        ArrayList<Transaction> transactions = Bank.getInstance().getTransactionHistory()
+                .get(input.getEmail());
+        DebugDTO<Transaction> printTransaction = new DebugDTO<Transaction>(input.getCommand(),
+                transactions, input.getTimestamp());
         JsonOutManager.getInstance().addToOutput(printTransaction);
     }
 }

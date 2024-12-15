@@ -8,5 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record AccountMerchantsDTO(@JsonGetter("IBAN") String iban, double balance, String currency,
-                                  ArrayList<Transaction> transactions, List<Merchant> commerciants) {
+                                  ArrayList<Transaction> transactions,
+                                  List<Merchant> commerciants) {
 }

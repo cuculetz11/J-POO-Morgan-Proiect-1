@@ -1,17 +1,14 @@
 package org.poo.command.debug.error;
 
+import lombok.Getter;
+
+@Getter
 public class NotFoundError {
-    private String description;
-    private  int timestamp;
-    public NotFoundError(String description, int timestamp) {
+    private final String description;
+    private final int timestamp;
+    public NotFoundError(final String description, final int timestamp) {
         this.description = description;
         this.timestamp = timestamp;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public int getTimestamp() {
-        return timestamp;
     }
 
 }
